@@ -1,6 +1,7 @@
 // Test page to debug video loading
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { API_URL, getMediaUrl } from '@/lib/api'
 
 export default function TestVideos() {
   const [videos, setVideos] = useState<any[]>([])
@@ -13,7 +14,7 @@ export default function TestVideos() {
 
   const fetchVideos = async () => {
     try {
-      const response = await axios.get('https://youtube-back-iota.vercel.app/api/videos')
+      const response = await axios.get(`${API_URL}/api/videos`)
       console.log('API Response:', response.data)
       setVideos(response.data)
       setLoading(false)
@@ -49,7 +50,7 @@ export default function TestVideos() {
               <div className="mt-4">
                 <p className="mb-2">Thumbnail Preview:</p>
                 <img 
-                  src={video.thumbnail.startsWith('http') ? video.thumbnail : `https://youtube-back-iota.vercel.app${video.thumbnail}`}
+                  src={getMediaUrl(video.thumbnail)}
                   alt={video.title}
                   className="max-w-xs"
                   onError={(e) => {
@@ -68,7 +69,7 @@ export default function TestVideos() {
               <video
                 controls
                 className="max-w-md"
-                src={video.videoUrl.startsWith('http') ? video.videoUrl : `https://youtube-back-iota.vercel.app${video.videoUrl}`}
+                src={getMediaUrl(video.videoUrl)}
                 onError={(e) => {
                   console.error('Video load error for:', video.videoUrl)
                   e.currentTarget.style.border = '2px solid red'

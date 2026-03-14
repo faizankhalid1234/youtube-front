@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { API_URL } from '@/lib/api'
 import VideoCard from '@/components/VideoCard'
 import Header from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
@@ -25,7 +26,7 @@ export default function Home() {
 
   const fetchVideos = async () => {
     try {
-      const response = await axios.get('https://youtube-back-iota.vercel.app/api/videos')
+      const response = await axios.get(`${API_URL}/api/videos`)
       console.log('Videos fetched:', response.data.length)
       console.log('Sample video:', response.data[0])
       setVideos(response.data)
@@ -43,7 +44,7 @@ export default function Home() {
       return
     }
     try {
-      const response = await axios.get(`https://youtube-back-iota.vercel.app/api/videos/search?q=${searchQuery}`)
+      const response = await axios.get(`${API_URL}/api/videos/search?q=${searchQuery}`)
       setVideos(response.data)
     } catch (error) {
       console.error('Error searching videos:', error)
@@ -52,7 +53,7 @@ export default function Home() {
 
   const handleLoadSamples = async () => {
     try {
-      const response = await axios.post('https://youtube-back-iota.vercel.app/api/videos/seed')
+      const response = await axios.post(`${API_URL}/api/videos/seed`)
       alert(response.data.message || 'Sample videos added!')
       fetchVideos()
     } catch (error: any) {

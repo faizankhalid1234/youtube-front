@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { FiPlay } from 'react-icons/fi'
+import { getMediaUrl } from '@/lib/api'
 
 interface Video {
   _id: string
@@ -24,15 +25,7 @@ export default function VideoCard({ video }: VideoCardProps) {
     router.push(`/watch/${video._id}`)
   }
 
-  const getThumbnailUrl = (): string | null => {
-    if (!video.thumbnail) return null
-    if (video.thumbnail.startsWith('http://') || video.thumbnail.startsWith('https://')) {
-      return video.thumbnail
-    }
-    return `https://youtube-back-iota.vercel.app${video.thumbnail.startsWith('/') ? '' : '/'}${video.thumbnail}`
-  }
-
-  const thumbnailUrl = getThumbnailUrl()
+  const thumbnailUrl = video.thumbnail ? getMediaUrl(video.thumbnail) : null
 
   return (
     <div

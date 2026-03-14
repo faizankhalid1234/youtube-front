@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import { API_URL } from '@/lib/api'
 import Header from '@/components/Header'
 
 export default function Upload() {
@@ -41,7 +42,7 @@ export default function Upload() {
     }
 
     try {
-      const response = await axios.post('https://youtube-back-iota.vercel.app/api/videos/upload', formData, {
+      const response = await axios.post(`${API_URL}/api/videos/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

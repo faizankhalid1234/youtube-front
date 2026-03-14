@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import dynamic from 'next/dynamic'
+import { API_URL, getMediaUrl } from '@/lib/api'
 import Header from '@/components/Header'
 
 const Plyr = dynamic(() => import('plyr-react').then((mod) => mod.Plyr), { ssr: false })
@@ -14,14 +15,6 @@ interface Video {
   thumbnail: string
   views: number
   createdAt: string
-}
-
-function getMediaUrl(url: string): string {
-  if (!url) return ''
-  if (url.startsWith('http://') || url.startsWith('https://')) {
-    return url
-  }
-  return `https://youtube-back-iota.vercel.app${url.startsWith('/') ? '' : '/'}${url}`
 }
 
 function getVideoType(url: string): string {
@@ -44,12 +37,12 @@ export default function Watch() {
 
   const fetchVideo = async () => {
     try {
-      const response = await axios.get(`https://youtube-back-iota.vercel.app/api/videos/${id}`)
+      const response = await axios.get(`${API_URL}/api/videos/${id}`)
       setVideo(response.data)
       setLoading(false)
       
       // Increment view count
-      await axios.put(`https://youtube-back-iota.vercel.app/api/videos/${id}/views`)
+      await axios.put(`${API_URL}/api/videos/${id}/views`)
     } catch (error) {
       console.error('Error fetching video:', error)
       setLoading(false)
